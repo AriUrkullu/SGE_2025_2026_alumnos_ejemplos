@@ -1,0 +1,24 @@
+﻿@page "/"
+
+<h1>Color Switcher</h1>
+<div style="background-color:rgb(@red,@green,@blue);width:200px;height:200px"></div>
+
+<div style="width:300px;display:flex;flex-direction:column">
+	<label for="r">Red(@red)</label>
+	<br />
+	<input type="range" id="r" min="0" max="255" @bind="red" @bind:event="oninput" />
+	<br />
+	<label for="g">Green(@green)</label>
+	<br />
+	<input type="range" id="g" min="0" max="255" @bind="green" @bind:event="oninput" />
+	<br />
+	<label for="b">Blue(@blue)</label>
+	<br />
+	<input type="range" id="b" min="0" max="255" @bind="blue" @bind:event="oninput" />
+</div>
+
+@code {
+	int red = 0;
+	int green = 0;
+	int blue = 0;
+}

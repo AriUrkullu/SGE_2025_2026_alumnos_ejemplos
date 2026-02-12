@@ -1,0 +1,41 @@
+﻿@page "/"
+
+@inject IJSRuntime JSRuntime
+
+<h3>Selector de Idioma</h3>
+
+<select @onchange="ChangeLanguage">
+    <option value="es">Castellano</option>
+    <option value="eu">Euskera</option>
+    <option value="en">Inglés</option>
+    <option value="ot">Otro</option>
+</select>
+
+<p>@Label1</p>
+<p>@Label2</p>
+
+@code {
+    private string SelectedLanguage = "es";
+
+    // Texto dinámico basado en el idioma seleccionado
+    private string Label1 => SelectedLanguage switch
+    {
+        "es" => "Hola",
+        "eu" => "Kaixo",
+        "en" => "Hello",
+        _ => "Hola"
+    };
+
+    private string Label2 => SelectedLanguage switch
+    {
+        "es" => "¿Cómo estás?",
+        "eu" => "Zelan zaude?",
+        "en" => "How are you?",
+        _ => "¿Cómo estás?"
+    };
+
+    private void ChangeLanguage(ChangeEventArgs e)
+    {
+        SelectedLanguage = e.Value.ToString();
+    }
+}

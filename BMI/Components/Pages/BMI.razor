@@ -1,0 +1,63 @@
+﻿@page "/"
+
+<h3>BMI Calculator</h3>
+<p>Calculate your BMI</p>
+<input type="text" class="form-control" placeholder="Your Height" @bind=height />
+<input type="text" class="form-control mt-2" placeholder="Your Weight" @bind=weight />
+<input type="text" class="form-control mt-2" placeholder="This is your result" @bind=result disabled />
+<div class="text-center">
+    <button @onclick="CalculateBMI" class="btn btn-primary mt-2" style="width:250px">Calculate</button>
+</div>
+@code {
+    double? height = null;
+    double? weight = null;
+    string? result = null;
+
+    private void CalculateBMI()
+    {
+        if (height != null && weight != null)
+        {
+            var bmi = weight / (height * height);
+            if (bmi < 18.5)
+            {
+                result = $"You are underweight - BMI: {bmi}";
+            }
+            else if (bmi >= 18.5 && bmi <= 24.9)
+            {
+                result = $"Your weight is normal - BMI: {bmi}";
+            }
+            else if (bmi >= 25 && bmi <= 29.9)
+            {
+                result = $"You are overweight - BMI: {bmi}";
+            }
+            else
+            {
+                result = $"You have obesity - BMI: {bmi}";
+            }
+            /*
+            if (height != 0 && weight != 0)
+            {
+                float calculo = weight / (height * height);
+                this.res = calculo;
+                switch (calculo)
+                {
+                    case < (float)18.5:
+                        type = "underweight";
+                        break;
+                    case >= 30:
+                        type = "obesity";
+                        break;
+                    case >= 25:
+                        type = "overweight";
+                        break;
+                    case >= (float)18.8:
+                        type = "normal";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            */
+        }
+    }
+}

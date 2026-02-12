@@ -1,0 +1,46 @@
+﻿@page "/"
+@using System.Reflection
+@using System.Text.Json
+@using LeerJSONPersonas.Modelos
+
+<h3>Personas</h3>
+
+@if (lista == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <img src="images/logo.png" alt="Logo" width="150" height="150" />
+    <img src="images/casa0.jpg" alt="Fondo" style="width:90px;height:90px;" />
+
+    <ul>
+        @foreach (var p in lista)
+        {
+            <li>@p.nombre - @p.edad años</li>
+        }
+    </ul>
+}
+
+@code {
+
+    List<Persona>? lista;
+    // archivo personas.json debe estar en Resources/Raw
+    // propiedades: buid action= mauiAsset/AndroidAsset y copiar en directorio de salida:copiar siempre
+    protected override async Task OnInitializedAsync()
+    {
+        //PERSONAS
+        try
+        {
+            using var stream = await FileSystem.OpenAppPackageFileAsync("personas.json");
+            using var reader = new StreamReader(stream);
+
+            var json = reader.ReadToEnd();
+            lista = JsonSerializer.Deserialize<List<Persona>>(json) ?? new List<Persona>();
+        }
+        catch (Exception ex)
+        {
+            lista = new List<Persona>();
+        }
+    }
+}

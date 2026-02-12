@@ -1,0 +1,31 @@
+﻿@page "/"
+
+<h1>Proyecto Raffle Winner</h1>
+<button @onclick=generarNumero>Siguiente número</button>
+<p>
+    <input type="checkbox" @bind=salvarGanador/>
+    ¿Salvar ganador?
+</p>
+<h3>Histórico de números ganadores</h3>
+<p>Número ganador: @numero</p>
+
+@foreach (var number in Ganadores)
+{
+    <ul>
+        <li>@number</li>
+    </ul>
+}
+
+@code {
+    public int numero;
+    public bool salvarGanador;
+    public List<int> Ganadores = new List<int>();
+    void generarNumero()
+    {
+        numero = new Random().Next(0, 1000);
+        if (salvarGanador)
+        {
+            Ganadores.Add(numero);
+        }
+    }
+}

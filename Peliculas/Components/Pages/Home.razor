@@ -1,0 +1,76 @@
+﻿@page "/"
+
+<h1>Películas</h1>
+
+<h1 style="color:@micolor;font-size:@mitamaño">Listado de peliculas</h1>
+<div style="display:flex"> 
+    <div style="width:150px">
+        <select @bind="micolor"> 
+            <option value="red">Red</option> 
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+        </select>
+    </div>
+    <div style="width:150px">
+        <select @bind="mitamaño">
+            <option value="12px">12px</option>
+            <option value="24px">24px</option>
+            <option value="36px">36px</option>
+        </select>
+    </div>
+</div>
+<br />
+
+@if (peliculas == null)
+{
+    <p>NO HAY PELICULAS</p>
+}
+else
+{
+    @*   @foreach (var item in peliculas)
+    {
+        <p><b>Titulo: @item.Titulo</b></p>
+        <p>Fecha: @item.Lanzamiento.ToShortDateString()</p>
+    } *@
+
+    @for (int i = 0; i < peliculas.Count; i++) 
+    {
+        @if (i == peliculas.Count - 1) 
+        {
+            <p>ULTIMA Pelicula</p>
+        }
+        <p><b>@(i + 1) -Titulo: @peliculas[i].Titulo</b></p>
+        <p>Fecha: @peliculas[i].Lanzamiento.ToShortDateString() </p>
+    }
+}
+
+@code {
+    public string? micolor;
+    public string? mitamaño;
+
+    public List<Pelicula> peliculas { get; set; }
+
+    protected override void OnInitialized()
+    {
+        peliculas = ObtenerPeliculas();
+        micolor = "red";
+        mitamaño = "12px";
+    }
+
+    private List<Pelicula> ObtenerPeliculas()
+    {
+        return new List<Pelicula>()
+        {
+            new Pelicula(){Titulo="Cars1",Lanzamiento=new DateTime(2025,11,18)},
+            new Pelicula(){Titulo="Cars2",Lanzamiento=new DateTime(2025,11,17)},
+            new Pelicula(){Titulo="Cars3",Lanzamiento=new DateTime(2025,11,16)},
+        };
+    }
+
+    public class Pelicula
+    {
+        public string? Titulo { get; set; }
+        public DateTime Lanzamiento { get; set; }
+    }
+
+}

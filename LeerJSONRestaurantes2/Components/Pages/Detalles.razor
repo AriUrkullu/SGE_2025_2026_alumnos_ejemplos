@@ -1,0 +1,56 @@
+﻿@page "/unrestaurante/{documentName}"
+@using LeerJSONRestaurantes2.Modelos
+@using LeerJSONRestaurantes2.Servicios
+@inject RestauranteService servicio
+
+<h3>Detalle del restaurante</h3>
+<!--<a href="($"/counter")">Volver</a>
+<a href="/counter">Volver</a>-->
+<a href="@($"/")">Volver</a>
+<a href="/">Volver</a>
+
+@if (servicio.restaurantes is null)
+{
+    <p>No encontrado</p>
+}
+else
+{
+    <p><strong>@restaurante?.address</strong></p>
+    <p>Accesibilidad: @restaurante?.locality</p>
+    <a href="@restaurante?.web" target="_blank" class="btn btn-outline-secondary btn-sm me-3">Abrir pag web</a>
+    <br />
+    <button class="btn btn-success" @onclick="() => AbrirMapa1(restaurante?.address)">
+        Abrir Mapa con Dirección
+    </button>
+
+}
+
+
+@code {
+    [Parameter]
+    public string? documentName { get; set; }
+
+    private Restaurante? restaurante;
+
+    protected override void OnParametersSet()
+    {
+        restaurante = servicio.restaurantes?.FirstOrDefault(r => r.documentName == documentName);
+    }
+
+    public async Task AbrirMapa1(string? direccion)
+    {
+        if (!string.IsNullOrEmpty(direccion))
+        {
+            string baseUrl = "https://www.google.com/maps/search/";
+            string url = $"{baseUrl}{Uri.EscapeDataString(direccion)}";
+            try
+            {
+                await Launcher.Default.OpenAsync(url);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"No se pudo abrir el mapa: {ex.Message}", "OK");
+            }
+        }
+    }
+}
